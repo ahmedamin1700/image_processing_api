@@ -1,7 +1,11 @@
-import myFunc from "../index";
+import supertest from "supertest";
+import app from "../index";
 
-describe("first suit", () => {
-  it("expect myFunc(5) to equal 25", () => {
-    expect(myFunc(5)).toEqual(25);
+const request = supertest(app);
+
+describe("Test endpoint '/api/images' response", () => {
+  it("gets the '/api/images' endpoint", async () => {
+    const response = await request.get("/api/images");
+    expect(response.status).toBe(200);
   });
 });
