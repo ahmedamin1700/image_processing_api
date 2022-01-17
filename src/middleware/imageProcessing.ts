@@ -1,15 +1,66 @@
 import path from "path";
-import { readFile, writeFile } from "fs/promises";
+import { writeFile, access } from "fs/promises";
 import sharp from "sharp";
 
-const FULL_IMG_DIR = path.resolve(__dirname, "../../assets/full");
-export const THUMB_IMG_DIR = path.resolve(__dirname, "../../assets/thumb");
+interface QueryTypes {
+  filename: string;
+  width?: number;
+  height?: number;
+}
 
-export default async (name: string, w: number, h: number) => {
-  console.log(__dirname);
+class Image {
+  // directory paths for 'full' and 'thumb'.
+  private fullDirPath = path.resolve(__dirname, "../../assets/full");
+  private thumbDirPath = path.resolve(__dirname, "../../assets/thumb");
 
-  const imageFile = await readFile(`${FULL_IMG_DIR}/${name}.jpg`);
-  const processed = await sharp(imageFile).resize(w, h).toBuffer();
+  // retrieve thumb images path.
+  getThumbImagePath(query: QueryTypes): string {
+    return path.resolve(
+      this.thumbDirPath,
+      `${query.filename}-${query.width}x${query.height}.jpg`
+    );
+  }
 
-  await writeFile(`${THUMB_IMG_DIR}/${name}-thumb.jpg`, processed);
-};
+  // retrieve full images path.
+  getFullImagePath(filename: string): string {
+    return path.resolve(this.fullDirPath, `${filename}.jpg`);
+  }
+
+  // check if thumb available to gain performance.
+  async checkImageAvailable(query: QueryTypes): Promise<boolean> {
+    let imageFile = null;
+
+    if (query.width && query.height) {
+      imageFile = this.getThumbImagePath(query);
+    } else {
+      imageFile = this.getFullImagePath(query.filename);
+    }
+
+    try {
+      await access(imageFile);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // image processing function
+  async process(query: QueryTypes): Promise<void> {
+    // first check if thumb available.
+    const found = await this.checkImageAvailable(query);
+
+    // only if not found will process otherwise not.
+    if (!found) {
+      const processed = await sharp(this.getFullImagePath(query.filename))
+        .resize(query.width, query.height)
+        .toBuffer();
+
+      await writeFile(
+        `${this.thumbDirPath}/${query.filename}-${query.width}x${query.height}.jpg`,
+        processed
+      );
+    }
+  }
+}
+
+export default Image;
