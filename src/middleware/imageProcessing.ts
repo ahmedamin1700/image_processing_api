@@ -1,5 +1,5 @@
 import path from "path";
-import { writeFile, access } from "fs/promises";
+import { writeFile, access, readdir } from "fs/promises";
 import sharp from "sharp";
 
 interface QueryTypes {
@@ -24,6 +24,15 @@ class Image {
   // retrieve full images path.
   getFullImagePath(filename: string): string {
     return path.resolve(this.fullDirPath, `${filename}.jpg`);
+  }
+
+  async getAllAvailableImagesNames(): Promise<string[] | null> {
+    try {
+      const files = await readdir(this.fullDirPath);
+      return files.map((file) => file.split(".")[0]);
+    } catch (error) {
+      return null;
+    }
   }
 
   // check if thumb available to gain performance.
