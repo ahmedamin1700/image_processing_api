@@ -3,3 +3,4 @@ dist
 package-lock.json
 full/**.jpg
 assets/thumb/**.jpg
+assets/full/**.jpg

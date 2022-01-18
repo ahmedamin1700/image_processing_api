@@ -1,0 +1,23 @@
+extends layout.pug 
+block content
+  h2(class="text-lg font-semibold") Welcome to Image Processing API app.
+  br
+  p(class="text-sm") Choose your image below from uploaded images and then process it with selected values for Width and Height.
+
+
+  div(class="w-1/2 h-48 border mx-auto mt-12 flex items-center justify-center") 
+    form(action="/process", method="post")
+      div(class="flex flex-col space-y-3")
+        div
+          label(for="name") Image Name:  
+          select#name(name="name")
+            each val in names
+              option(value=val)=val   
+        div
+          label(for="width") Width:  
+          input#width(type="text" name="width" placeholder="Width" class="pl-3") 
+        div
+          label(for="height") Height:  
+          input#height(type="text" name="height" placeholder="Height" class="pl-3")
+        div
+          input(type="submit", value="Process" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg cursor-pointer") 
