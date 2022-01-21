@@ -6,10 +6,11 @@ block content
   p(class="text-sm") Or you can upload the image below and then process it in the next page.
 
 
-  div(class="w-1/2 h-48 border mx-auto mt-12 flex items-center justify-center") 
+  div(class="w-1/2 h-48 border mx-auto mt-12 flex flex-col items-center justify-center") 
     form(action="/", method="post", enctype="multipart/form-data")
       div(class="flex flex-col space-y-3")
         div 
-          input(type="file" name="image") 
+          input(type="file" name="image" required) 
         div
           input(type="submit", value="Upload" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg cursor-pointer") 
+    a(href="/process" class="block mt-5 text-sm text-gray-500") Process Directly 
