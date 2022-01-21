@@ -1,17 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import Image from "./imageProcessing";
 
-export interface QueryTypes {
-  filename: string;
-  width: string;
-  height: string;
-}
+import { QueryTypes } from "../types";
 
 const image = new Image();
 
 // validation middleware for request query.
 export const valid = async (
-  req: Request<any, any, any, QueryTypes>,
+  req: Request<unknown, unknown, unknown, QueryTypes>,
   res: Response,
   next: NextFunction
 ) => {

@@ -1,6 +1,7 @@
 import { Router, Request } from "express";
-import { valid, QueryTypes } from "../../middleware/queryValidation";
+import { valid } from "../../middleware/queryValidation";
 import Image from "../../middleware/imageProcessing";
+import { QueryTypes } from "../../types";
 
 const router = Router();
 const image = new Image();
@@ -8,7 +9,7 @@ const image = new Image();
 router.get(
   "/images",
   valid,
-  async (req: Request<any, any, any, QueryTypes>, res) => {
+  async (req: Request<unknown, unknown, unknown, QueryTypes>, res) => {
     const { filename, width, height } = req.query;
 
     await image.process({

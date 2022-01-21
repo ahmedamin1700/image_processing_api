@@ -2,16 +2,12 @@ import path from "path";
 import { writeFile, access, readdir } from "fs/promises";
 import sharp from "sharp";
 
-interface QueryTypes {
-  filename: string;
-  width?: number;
-  height?: number;
-}
+import { QueryTypes } from "../types";
 
 class Image {
   // directory paths for 'full' and 'thumb'.
-  private fullDirPath = path.resolve(__dirname, "../../assets/full");
-  private thumbDirPath = path.resolve(__dirname, "../../assets/thumb");
+  fullDirPath = path.resolve(__dirname, "../../assets/full");
+  thumbDirPath = path.resolve(__dirname, "../../assets/thumb");
 
   // retrieve thumb images path.
   getThumbImagePath(query: QueryTypes): string {
