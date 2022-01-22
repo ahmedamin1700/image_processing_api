@@ -8,8 +8,9 @@
     "jasmine": "jasmine",
     "lint": "eslint --ignore-path .eslintignore --ext .ts .",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "start": "nodemon src/index.ts",
-    "build": "tsc"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js"
   },
   "keywords": [
     "FWD",

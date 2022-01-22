@@ -99,11 +99,12 @@ npm run test
 
 There are two modes of execution:
 
-1. Single execution
+1. Single execution (build and serve the `dist/index.js`)
 2. Execution with watcher mode and restart enabled
 
 The commands to achieve the builds described above are, respectively:
 
 ```bash
 npm run start
+npm run dev
 ```
