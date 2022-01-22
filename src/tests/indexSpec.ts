@@ -1,10 +1,9 @@
 import path from "path";
 import supertest from "supertest";
 import app from "../index";
-import Image from "../middleware/imageProcessing";
+import { ASSETS_DIR_PATH } from "../middleware/imageProcessing";
 
 const request = supertest(app);
-const image = new Image();
 
 describe("Test index endpoint '/' responses", () => {
   it("GET the '/' endpoint", async () => {
@@ -13,11 +12,9 @@ describe("Test index endpoint '/' responses", () => {
   });
 
   it("POST the '/' endpoint", async () => {
-    const testImageDir = path.resolve(image.fullDirPath, "../");
-
     const response = await request
       .post("/")
-      .attach("image", path.resolve(testImageDir, "test.jpg"));
+      .attach("image", path.resolve(ASSETS_DIR_PATH, "test.jpg"));
     expect(response.status).toBe(302);
   });
 

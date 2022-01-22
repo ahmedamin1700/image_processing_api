@@ -1,10 +1,9 @@
 import { Router, Request, Response } from "express";
 import { valid } from "../../middleware/queryValidation";
-import Image from "../../middleware/imageProcessing";
+import { process, getThumbImagePath } from "../../middleware/imageProcessing";
 import { QueryTypes } from "../../types";
 
 const router = Router();
-const image = new Image();
 
 router.get(
   "/images",
@@ -15,14 +14,14 @@ router.get(
   ): Promise<void> => {
     const { filename, width, height } = req.query;
 
-    await image.process({
+    await process({
       filename,
       width: Number(width),
       height: Number(height),
     });
 
     res.sendFile(
-      image.getThumbImagePath({
+      getThumbImagePath({
         filename,
         width: Number(width),
         height: Number(height),
