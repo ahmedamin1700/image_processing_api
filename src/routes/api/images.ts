@@ -16,15 +16,15 @@ router.get(
 
     await process({
       filename,
-      width: Number(width),
-      height: Number(height),
+      width,
+      height,
     });
 
     res.sendFile(
       getThumbImagePath({
         filename,
-        width: Number(width),
-        height: Number(height),
+        width,
+        height,
       })
     );
   }

@@ -9,9 +9,19 @@ export const valid = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!(await checkImageAvailable({ filename: req.query.filename }))) {
+  const { filename, width, height } = req.query;
+  if (
+    !(await checkImageAvailable({
+      filename: filename,
+      width: null,
+      height: null,
+    }))
+  ) {
     return res.send("Error: file missing from full dir.");
-  } else if (!req.query.width || !req.query.height) {
-    return res.send("Error: resizing dimension not available.");
+  } else if (width && height) {
+    if (isNaN(parseInt(width)) || isNaN(parseInt(height))) {
+      return res.send("Error: dimensions must be a valid number.");
+    }
+    return next();
   } else return next();
 };

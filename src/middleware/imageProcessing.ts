@@ -72,9 +72,9 @@ export const process = async (query: QueryTypes): Promise<void> => {
   const found = await checkImageAvailable(query);
 
   // only if not found will process otherwise not.
-  if (!found) {
+  if (!found && query.width && query.height) {
     const processed = await sharp(getFullImagePath(query.filename))
-      .resize(query.width, query.height)
+      .resize(parseInt(query.width), parseInt(query.height))
       .toBuffer();
 
     await writeFile(getThumbImagePath(query), processed);

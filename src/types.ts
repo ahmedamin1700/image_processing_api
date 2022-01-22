@@ -1,5 +1,5 @@
 export interface QueryTypes {
   filename: string;
-  width?: number;
-  height?: number;
+  width: string | null;
+  height: string | null;
 }
