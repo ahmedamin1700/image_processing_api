@@ -1,10 +1,26 @@
 import path from "path";
-import { writeFile, access, readdir } from "fs/promises";
+import { writeFile, access, readdir, mkdir } from "fs/promises";
 import sharp from "sharp";
 
 import { QueryTypes } from "../types";
 
 export const ASSETS_DIR_PATH = path.resolve(__dirname, "../../assets");
+
+export const initImageDirs = async (): Promise<void> => {
+  // first check if full images dir available if not create it.
+  try {
+    await access(path.resolve(ASSETS_DIR_PATH, "full"));
+  } catch (error) {
+    await mkdir(path.resolve(ASSETS_DIR_PATH, "full"));
+  }
+
+  // second check if thumb images dir available if not create it.
+  try {
+    await access(path.resolve(ASSETS_DIR_PATH, "thumb"));
+  } catch (error) {
+    await mkdir(path.resolve(ASSETS_DIR_PATH, "thumb"));
+  }
+};
 
 // retrieve thumb images path.
 export const getThumbImagePath = (query: QueryTypes): string => {

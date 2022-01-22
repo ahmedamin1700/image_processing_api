@@ -3,6 +3,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import imagesRoute from "./routes/api/images";
 import indexRoute from "./routes/index";
+import { initImageDirs } from "./middleware/imageProcessing";
 
 const app = express();
 const port = 3000;
@@ -15,8 +16,9 @@ app.use(express.static("public"));
 app.use("/api", imagesRoute);
 app.use("/", indexRoute);
 
-app.listen(port, () =>
-  console.log(`Server running on http://localhost:${port}`)
-);
+app.listen(port, async () => {
+  await initImageDirs();
+  console.log(`Server running on http://localhost:${port}`);
+});
 
 export default app;
