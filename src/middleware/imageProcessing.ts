@@ -67,16 +67,25 @@ export const checkImageAvailable = async (
 };
 
 // image processing function
-export const process = async (query: QueryTypes): Promise<void> => {
+export const process = async (query: QueryTypes): Promise<boolean> => {
   // first check if thumb available.
   const found = await checkImageAvailable(query);
+
+  if (found) return true;
 
   // only if not found will process otherwise not.
   if (!found && query.width && query.height) {
     const processed = await sharp(getFullImagePath(query.filename))
       .resize(parseInt(query.width), parseInt(query.height))
       .toBuffer();
+    try {
+      await writeFile(getThumbImagePath(query), processed);
 
-    await writeFile(getThumbImagePath(query), processed);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
+
+  return false;
 };
